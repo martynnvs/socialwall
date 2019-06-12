@@ -94,7 +94,7 @@ class custom_classes_socialwall extends handlerclass implements custominterface
         $this->init();                                              //Aanroepen.
         $rows = $this->getFacebookFeed();                           //Roep de Facebook feed aan.
         if (count($rows) == 0) {
-           $this->notifcationMail();
+            $this->notifcationMail();
         }
         $layout = '';                                               //$layout initialiseren.
         $layout .= '<div class="timeline clearfix">';               //Begin van de Social Wall HTML.
@@ -142,7 +142,7 @@ class custom_classes_socialwall extends handlerclass implements custominterface
                                     <img src="' . $afbeelding[0]['afbeelding'] . '" style="width: 100%;">
                                 </div>';
 
-                //Wanneer $video niet null is, laat video zien en laat de $afbeelding achterwege.
+                    //Wanneer $video niet null is, laat video zien en laat de $afbeelding achterwege.
                 }elseif ($video['video'] != null) {
 
                     $layout .= '<div class="embed-responsive embed-responsive-16by9">
@@ -151,7 +151,7 @@ class custom_classes_socialwall extends handlerclass implements custominterface
                                     </video>
                                 </div>';
 
-                //Wanneer er meer dan 1 afbeelding is, maak er een carousel van.
+                    //Wanneer er meer dan 1 afbeelding is, maak er een carousel van.
                 } elseif (sizeof($afbeelding) >= 2) {
                     $layout .= '<div id="carousel-blog-post" class="carousel slide" data-ride="carousel">
                                     <div class="carousel-inner" role="listbox">';
@@ -329,19 +329,22 @@ class custom_classes_socialwall extends handlerclass implements custominterface
 
         //Het bericht en de opmaak
         $bericht .= '<h2>Uw Facebook token is verlopen.</h2>
-                        <strong>Uw huidige token:</strong>' . $accessToken;
+                        <strong>Uw huidige token:</strong>' . $accessToken . '<br /> <br />
+                        U kunt uw token handmatig weer verversen. Ga naar 
+                        <a href="https://developers.facebook.com/tools/explorer">Graph API Explorer</a> en klik op "get token" en vernieuw uw token.<br/>
+                        Voer de ververste token in via de BS Manager en binnen enkele minuten wordt uw Facebook feed weer opgehaald.';
 
         mail($naar,$onderwerp,$bericht,$headers);
     }
 
     private function mailError($foutbericht) {
-        $naar = "ONTVANGER EMAIL HIER"; //Ontvanger
+        $naar = "martijnvsleen@gmail.com"; //Ontvanger
         $onderwerp = "Kritieke fout"; //Het onderwerp.
         $bericht = ''; //Bericht definiëren
         $headers  = 'MIME-Version: 1.0' . "\r\n"; //Mail headers instellen
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         $headers .= 'Content-Transfer-Encoding: 8bit\n\n';
-        $headers .= 'Van: VERSTUURD DOOR.';
+        $headers .= 'Van: crm@bswerkplaats.nl';
 
         //Het bericht en de opmaak
         $bericht .= '<h2>Een kritieke fout heeft zich voorgedaan op de Social Wall.</h2>'.$foutbericht;
@@ -354,13 +357,13 @@ class custom_classes_socialwall extends handlerclass implements custominterface
     private function facebookTijdlijn() {
         //Gegevens instellen.
         $this->fb = new \Facebook\Facebook([
-            'app_id' =>  '',
-            'app_secret' => '',
+            'app_id' =>  '508150623058325',
+            'app_secret' => '1f149afcfe771f43b83c91c96c7c7503',
             'default_graph_version' => 'v3.3',
         ]);
 
         //Access token for accessing Facebook.
-        $accessToken = '';
+        $accessToken = 'EAAHOKQlhOZAUBAJhhb9DEQxMo8ftWsadaMkyqUfY3glFA7MDwIrWlEzEhrKNNjjy0RexTb5RUDSj5wmqdiOZCoNN8cbI7lHxcZCZA26tL5NwZALFUhZBbcJsb0Rs9CkcQPTSZBsqAqwQcuTutjukOih5WSPRM428lU3tI3yXFiRqaZANUyCNQHH5DVdyJBu5qXLgAZCdyAcWRtQZDZD';
 
         //Facebook berichten aanroepen, anders een error teruggeven.
         try {
@@ -464,6 +467,3 @@ class custom_classes_socialwall extends handlerclass implements custominterface
         }
     }
 }
-//$datum = date('d-m-Y');
-//$foutbericht = "<h2>CRON job</h2> [$datum] - De CRON job heeft niet correct gedraaid.";
-//$this->mailError($foutbericht);
